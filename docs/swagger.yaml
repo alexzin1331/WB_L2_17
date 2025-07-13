@@ -1,0 +1,257 @@
+basePath: /
+definitions:
+  service.DeleteEventInput:
+    properties:
+      date:
+        description: YYYY-MM-DD
+        type: string
+      user_id:
+        type: integer
+    required:
+    - date
+    - user_id
+    type: object
+  service.EventInput:
+    properties:
+      date:
+        description: YYYY-MM-DD
+        type: string
+      event:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - date
+    - event
+    - title
+    - user_id
+    type: object
+  storage.Event:
+    properties:
+      date:
+        type: string
+      text:
+        type: string
+      title:
+        type: string
+      userID:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: HTTP API для управления событиями календаря
+  title: Calendar Events API
+  version: "1.0"
+paths:
+  /create_event:
+    post:
+      consumes:
+      - application/json
+      description: Создаёт новое событие для пользователя
+      parameters:
+      - description: Событие
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/service.EventInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создать событие
+      tags:
+      - events
+  /delete_event:
+    post:
+      consumes:
+      - application/json
+      description: Удаляет событие пользователя по дате
+      parameters:
+      - description: Параметры удаления
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/service.DeleteEventInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удалить событие
+      tags:
+      - events
+  /events_for_day:
+    get:
+      consumes:
+      - application/json
+      description: Получить все события пользователя за указанный день
+      parameters:
+      - description: ID пользователя
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Дата в формате YYYY-MM-DD
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Event'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: События на день
+      tags:
+      - events
+  /events_for_month:
+    get:
+      consumes:
+      - application/json
+      description: Получить все события пользователя на 30 дней начиная с указанной
+        даты
+      parameters:
+      - description: ID пользователя
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Дата в формате YYYY-MM-DD
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Event'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: События на месяц
+      tags:
+      - events
+  /events_for_week:
+    get:
+      consumes:
+      - application/json
+      description: Получить все события пользователя на 7 дней начиная с указанной
+        даты
+      parameters:
+      - description: ID пользователя
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      - description: Дата в формате YYYY-MM-DD
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/storage.Event'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: События на неделю
+      tags:
+      - events
+  /update_event:
+    post:
+      consumes:
+      - application/json
+      description: Обновляет существующее событие пользователя
+      parameters:
+      - description: Событие
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/service.EventInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновить событие
+      tags:
+      - events
+schemes:
+- http
+swagger: "2.0"
