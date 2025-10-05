@@ -96,3 +96,8 @@ func RequestLoggerToFileMiddleware() gin.HandlerFunc {
 		httpDuration.WithLabelValues(method, path).Observe(duration.Seconds())
 	}
 }
+
+/*
+abcbpa
+s[i] = s[n-i]
+*/

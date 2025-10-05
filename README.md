@@ -98,3 +98,4 @@ http://localhost:8080/swagger/index.html
 
 Метрики Prometheus доступны по адресу: 
 http://localhost:8080/metrics
+
